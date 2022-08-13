@@ -5,7 +5,8 @@ import com.fiec.lpiiiback.models.dto.LoginRequestDto;
 import com.fiec.lpiiiback.models.dto.UserDto;
 import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.services.UserService;
-import com.fiec.lpiiiback.services.impl.UserServiceImpl;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -106,5 +106,33 @@ public class UserController {
                 .outputFormat("jpg")
                 .toFile(new File(thumbFilename.toString()));
         userService.assignImage(userId, profileImage);
+    }
+
+    @PostMapping(value="/csv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void createBulkOfUsers(@RequestParam("csvFile") MultipartFile multipartFile ) throws IOException {
+        BufferedReader fileReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"));
+        final int NAME=0, EMAIL=1, PASSWORD=2, PHONENUMBER=3;
+        try (Reader reader = fileReader) {
+            try (CSVReader csvReader = new CSVReader(reader)) {
+                List<String[]> csvFields =  csvReader.readAll();
+                for(int i=1; i<csvFields.size(); i++){
+                    User newUser = User.builder()
+                            .email(csvFields.get(i)[EMAIL])
+                            .name(csvFields.get(i)[NAME])
+                            .password(csvFields.get(i)[PASSWORD])
+                            .phoneNumber(csvFields.get(i)[PHONENUMBER])
+                            .build();
+                    userService.signUpUser(newUser.getName(),
+                            newUser.getEmail(),
+                            newUser.getPassword(), newUser.getPhoneNumber());
+                }
+
+
+            } catch (CsvException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
