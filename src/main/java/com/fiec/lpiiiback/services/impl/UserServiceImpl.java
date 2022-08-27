@@ -38,14 +38,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User signUpUser(String name, String email, String password, String phoneNumber) {
-        return userRepository.save(
-                User.builder()
-                        .name(name)
-                        .phoneNumber(phoneNumber)
-                        .email(email)
-                        .password(new String(DigestUtils.sha3_256(password), StandardCharsets.UTF_8))
-                        .build()
-        );
+
+            return userRepository.save(
+                    User.builder()
+                            .name(name)
+                            .phoneNumber(phoneNumber)
+                            .email(email)
+                            .password(new String(DigestUtils.sha3_256(password), StandardCharsets.UTF_8))
+                            .build()
+            );
+
     }
 
     @Override

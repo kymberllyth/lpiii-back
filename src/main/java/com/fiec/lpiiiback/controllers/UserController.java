@@ -5,6 +5,8 @@ import com.fiec.lpiiiback.models.dto.LoginRequestDto;
 import com.fiec.lpiiiback.models.dto.UserDto;
 import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.services.UserService;
+import com.fiec.lpiiiback.utils.CustomException;
+import com.fiec.lpiiiback.utils.ResultCodesException;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import net.coobird.thumbnailator.Thumbnails;
@@ -46,12 +48,16 @@ public class UserController {
     @PostMapping
     public UserDto signUpUser(@RequestBody CreateUserRequestDto createUserRequestDto){
 
-        return UserDto.convertToUserDto(userService.signUpUser(
-                createUserRequestDto.getName(),
-                createUserRequestDto.getEmail(),
-                createUserRequestDto.getPassword(),
-                createUserRequestDto.getPhoneNumber()
-        ));
+        try {
+            return UserDto.convertToUserDto(userService.signUpUser(
+                    createUserRequestDto.getName(),
+                    createUserRequestDto.getEmail(),
+                    createUserRequestDto.getPassword(),
+                    createUserRequestDto.getPhoneNumber()
+            ));
+        } catch(Exception ex){
+            throw new CustomException(ResultCodesException.USER_ALREADY_EXISTS);
+        }
     }
 
     @PostMapping("/login")
