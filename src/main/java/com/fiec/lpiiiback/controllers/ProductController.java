@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiec.lpiiiback.models.dto.ProductRequestDto;
 import com.fiec.lpiiiback.models.dto.ProductResponseDto;
 import com.fiec.lpiiiback.models.entities.Product;
+import com.fiec.lpiiiback.models.enums.UserRoles;
 import com.fiec.lpiiiback.services.ProductService;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +31,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<ProductResponseDto> getAllProducts(){
         return productService.findAllProducts().stream().map(ProductResponseDto::convert).collect(Collectors.toList());
     }

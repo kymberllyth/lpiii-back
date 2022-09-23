@@ -1,5 +1,8 @@
 package com.fiec.lpiiiback;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -17,20 +20,18 @@ public class LpiiiBackApplication  {
 	public static void main(String[] args) {
 		SpringApplication.run(LpiiiBackApplication.class, args);
 		try {
+			FirebaseOptions options = FirebaseOptions.builder()
+					.setCredentials(GoogleCredentials.getApplicationDefault())
+					//.setDatabaseUrl("https://<DATABASE_NAME>.firebaseio.com/")
+					.build();
+
+			FirebaseApp.initializeApp(options);
 			Files.createDirectory(Paths.get("uploads"));
 		} catch (IOException e) {
 
 		}
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
-			}
-		};
-	}
+
 
 }
