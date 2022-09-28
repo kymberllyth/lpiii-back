@@ -55,7 +55,7 @@ public class AuthController {
     }
 
     @PostMapping("/loginWithGoogle")
-    public LoginResponseDto signIn(@RequestBody LoginGoogleRequestDto loginGoogleRequestDto) throws GeneralSecurityException, IOException, HttpException {
+    public LoginResponseDto signInWithGoogle(@RequestBody LoginGoogleRequestDto loginGoogleRequestDto) throws GeneralSecurityException, IOException, HttpException {
         HttpTransport httpTransport = new NetHttpTransport();
         JsonFactory jsonFactory = new GsonFactory();
 
@@ -63,7 +63,6 @@ public class AuthController {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(httpTransport, jsonFactory)
                 .setAudience(Collections.singletonList(clientId))
                 .build();
-
 
         GoogleIdToken googleTokenResponse = verifier.verify(loginGoogleRequestDto.getTokenId());
 

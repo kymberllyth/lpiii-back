@@ -31,8 +31,8 @@ public class User implements UserDetails {
     private String password;
     private String profileImage;
 
+    private String fcmToken;
     private UserRoles userRole;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
