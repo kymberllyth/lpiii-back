@@ -3,6 +3,7 @@ package com.fiec.lpiiiback;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,6 +27,7 @@ public class LpiiiBackApplication  {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LpiiiBackApplication.class, args);
+		AbandonedConnectionCleanupThread.uncheckedShutdown();
 		try {
 			URL resource = new LpiiiBackApplication().getClass().getClassLoader()
 					.getResource("tcc-fiec-3mod-firebase-adminsdk-zv6co-9a2eb44ff4.json");
