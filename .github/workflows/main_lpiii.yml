@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'lpiii'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0794D98C44EA49B8AF4BB94CA930E1A7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_83653136E8BD4B6A94DBB31DC54D1393 }}
           package: '*.war'
