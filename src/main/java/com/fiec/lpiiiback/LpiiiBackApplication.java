@@ -26,9 +26,10 @@ public class LpiiiBackApplication  {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(LpiiiBackApplication.class, args);
-		AbandonedConnectionCleanupThread.uncheckedShutdown();
 		try {
+			 SpringApplication.run(LpiiiBackApplication.class, args);
+
+
 			URL resource = new LpiiiBackApplication().getClass().getClassLoader()
 					.getResource("tcc-fiec-3mod-firebase-adminsdk-zv6co-9a2eb44ff4.json");
 			FileInputStream serviceAccount =
