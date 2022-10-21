@@ -28,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() throws Exception {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration cors = new CorsConfiguration();
+        cors.setAllowedOrigins(List.of("*"));
         cors.setAllowedMethods(List.of("*"));
         source.registerCorsConfiguration("/**", cors.applyPermitDefaultValues());
         return source;
